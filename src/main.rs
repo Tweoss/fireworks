@@ -2,13 +2,17 @@ use bevy::{
     core_pipeline::{bloom::BloomSettings, tonemapping::Tonemapping},
     prelude::*,
 };
-use fireworks::FireworksPlugin;
-use mouse::MousePlugin;
+use fireworks::{FireworkClass, FireworkColor, FireworkScheduled, FireworksPlugin};
+use input::InputPlugin;
 use path_mesh::MeshPlugin;
+use physics::{PhysicsPlugin, Velocity};
+use rng::RngPlugin;
 
 mod fireworks;
-mod mouse;
+mod input;
 mod path_mesh;
+mod physics;
+mod rng;
 
 fn main() {
     App::new().add_plugins(ScenePlugin).run();
@@ -21,11 +25,16 @@ impl Plugin for ScenePlugin {
         app.insert_resource(ClearColor(Color::BLACK))
             .add_systems(Startup, scene_setup)
             .add_plugins((DefaultPlugins,))
-            .add_plugins((FireworksPlugin, MeshPlugin, MousePlugin));
+            .add_plugins((
+                FireworksPlugin,
+                MeshPlugin,
+                InputPlugin,
+                RngPlugin,
+                PhysicsPlugin,
+            ));
     }
 }
 
-// simple 3D scene
 fn scene_setup(
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
@@ -38,10 +47,38 @@ fn scene_setup(
         ..default()
     });
     // cube
+    commands.spawn(FireworkScheduled::new(
+        0.2,
+        0.1,
+        FireworkColor::Red,
+        FireworkClass::Sphere,
+        Velocity::new(0.02, 0.11, 0.04),
+        Vec3::new(0.0, 0.0, 0.0),
+    ));
+    commands.spawn(FireworkScheduled::new(
+        2.2,
+        0.1,
+        FireworkColor::White,
+        FireworkClass::Sphere,
+        Velocity::new(0.02, 0.11, 0.04),
+        Vec3::new(0.0, 0.0, 0.0),
+    ));
     commands.spawn(PbrBundle {
-        mesh: meshes.add(Mesh::from(shape::Cube { size: 5.0 })),
-        material: materials.add(Color::rgb(0.8, 0.7, 0.6).into()),
-        transform: Transform::from_xyz(0.0, 0.5, 0.0),
+        mesh: meshes.add(Mesh::from(shape::Cube { size: 1.0 })),
+        material: materials.add(Color::rgb(1.0, 0.2, 0.2).into()),
+        transform: Transform::from_xyz(8.0, 0.0, 0.0),
+        ..default()
+    });
+    commands.spawn(PbrBundle {
+        mesh: meshes.add(Mesh::from(shape::Cube { size: 1.0 })),
+        material: materials.add(Color::rgb(0.2, 1.0, 0.2).into()),
+        transform: Transform::from_xyz(0.0, 8.0, 0.0),
+        ..default()
+    });
+    commands.spawn(PbrBundle {
+        mesh: meshes.add(Mesh::from(shape::Cube { size: 1.0 })),
+        material: materials.add(Color::rgb(0.2, 0.2, 1.0).into()),
+        transform: Transform::from_xyz(0.0, 0.0, 8.0),
         ..default()
     });
     // camera
@@ -52,7 +89,8 @@ fn scene_setup(
                 ..default()
             },
             tonemapping: Tonemapping::TonyMcMapface,
-            transform: Transform::from_xyz(30.0, 10.0, 20.0).looking_at(Vec3::ZERO, Vec3::Y),
+            transform: Transform::from_xyz(30.0, 10.0, 20.0),
+            // .looking_at(Vec3::ZERO, Vec3::Y),
             ..default()
         },
         BloomSettings::default(), // enable bloom

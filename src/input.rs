@@ -1,8 +1,8 @@
 use bevy::{input::mouse::MouseMotion, prelude::*, window::CursorGrabMode};
 
-pub(crate) struct MousePlugin;
+pub(crate) struct InputPlugin;
 
-impl Plugin for MousePlugin {
+impl Plugin for InputPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(Update, (grab, motion));
     }
@@ -26,6 +26,7 @@ fn motion(
     mut motion_events: EventReader<MouseMotion>,
     mut query: Query<&mut Transform, With<Camera>>,
     windows: Query<&mut Window>,
+    key: Res<Input<KeyCode>>,
 ) {
     // make sure cursor is grabbed
     let window = windows.single();
@@ -39,4 +40,30 @@ fn motion(
         camera.rotate_y(-m.delta.x * 1e-3);
         camera.rotate_local_x(-m.delta.y * 1e-3);
     }
+
+    let mut direction = Vec3::ZERO;
+    if key.pressed(KeyCode::W) {
+        let mut forward = camera.forward();
+        forward.y = 0.0;
+        direction += forward;
+    }
+    if key.pressed(KeyCode::A) {
+        direction += camera.left();
+    }
+    if key.pressed(KeyCode::S) {
+        let mut back = camera.back();
+        back.y = 0.0;
+        direction += back;
+    }
+    if key.pressed(KeyCode::D) {
+        direction += camera.right();
+    }
+    if key.pressed(KeyCode::Space) {
+        direction += Vec3::Y;
+    }
+    if key.pressed(KeyCode::ShiftLeft) {
+        direction -= Vec3::Y;
+    }
+
+    camera.translation += direction.normalize_or_zero() * 0.4;
 }

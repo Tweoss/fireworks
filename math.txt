@@ -1,0 +1,46 @@
+Dcode:
+- elevation at destination 67 meters
+- elevation at viewpoint 166 meters
+
+Image Data:
+- elevation at viewpoint 182 meters
+- bearing 45.468 degrees
+
+Google Earth:
+- elevation at destination 216 ft = 65 meters
+- elevation at viewpoint 561 ft = 170 meters
+- bearing 46.04 degrees
+- distance 3850 meters
+
+Deciding that:
+- elevation at destination: 66 meters
+- elevation at viewpoint: 170 meters
+- bearing: 46 degrees
+- distance: 3850 meters
+
+Take firework explosion height to between (91, 182) meters or (300, 600) feet.
+Assume fireworks are spherically radial outwards with an initial speed of 186-263 ft/s. 
+The firework shell probably lasts for 0.8-2.0 seconds.
+
+(Fact sheet: https://woodstock.recdesk.com/RecDeskPortal/Portals/770/Fun%20Fireworks%20Facts!.pdf)
+
+Using coordinates:
+- viewpoint is (0, 170, 0)
+- north is positive x
+- east is positive z
+- up is positive y
+
+x-axis
+  \
+   \  | y-axis 
+    \ |
+	 \|--------- z-axis
+
+We have:
+- viewpoint: (0, 170, 0)
+- destination: (3850 * sin((90 - 46) * pi/180), 67, 3850 * cos((90 - 46) * pi/180))
+               = (2,674, 67, 2,769)
+
+
+
+
