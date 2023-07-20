@@ -10,21 +10,30 @@ impl Plugin for MeshPlugin {
     }
 }
 
-const LINES: &[[[f32; 3]; 2]] = &[[[0.0_f32, 0.0, 0.0], [1.0, 2.0, 3.0]]];
+const LINES: &[[[f32; 3]; 2]] = &[
+    // // left side path
+    // [[0.25_f32, 158.0, -0.25], [1.25, 157.0, 0.75]],
+    // [[1.25, 157.0, 0.75], [2.25, 156.0, 1.75]],
+    // [[2.25, 156.0, 1.75], [3.25, 155.0, 2.75]],
+    // // right side path
+    // [[-0.25, 158.0, 0.25], [0.75, 157.0, 1.25]],
+    // [[0.75, 157.0, 1.25], [1.75, 156.0, 2.25]],
+    // [[1.75, 156.0, 2.25], [2.75, 155.0, 3.25]],
+];
 
 fn setup(
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
-    // white_semi_transparent
+    // white glowing
     let material_handle = materials.add(StandardMaterial {
         emissive: Color::rgba(1.2, 1.2, 1.2, 0.2).into(),
         ..Default::default()
     });
 
     let mesh_handle = meshes.add(Mesh::from(shape::Cylinder {
-        radius: 0.1,
+        radius: 0.02,
         height: 1.0,
         ..Default::default()
     }));

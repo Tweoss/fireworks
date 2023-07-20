@@ -18,11 +18,13 @@ Deciding that:
 - bearing: 46 degrees
 - distance: 3850 meters
 
-Take firework explosion height to between (91, 182) meters or (300, 600) feet.
-Assume fireworks are spherically radial outwards with an initial speed of 186-263 ft/s. 
+Take firework explosion height to be between (91, 182) meters or (300, 600) feet.
+Assume fireworks are launched with an initial speed of 186-263 ft/s. 
+Then, the initial vertical velocity v and the explosion time t should satisfy -9.8/2 t^2 + v * t = [91, 182]. 
+
 The firework shell probably lasts for 0.8-2.0 seconds.
 
-(Fact sheet: https://woodstock.recdesk.com/RecDeskPortal/Portals/770/Fun%20Fireworks%20Facts!.pdf)
+(Source: https://woodstock.recdesk.com/RecDeskPortal/Portals/770/Fun%20Fireworks%20Facts!.pdf)
 
 Using coordinates:
 - viewpoint is (0, 170, 0)

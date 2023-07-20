@@ -26,10 +26,13 @@ impl Velocity {
     }
 }
 
-fn apply_gravity(mut query: Query<(Entity, &mut Transform, &mut Velocity)>) {
+fn apply_gravity(time: Res<Time>, mut query: Query<(Entity, &mut Transform, &mut Velocity)>) {
     for (_entity, mut transform, mut velocity) in query.iter_mut() {
-        transform.translation += velocity.velocity;
+        transform.translation += velocity.velocity * 5.0 * time.delta_seconds();
         // gravitational constant near surface of earth
-        velocity.velocity.y -= 9.764 * 1e-4;
+        // unfortunately, some constant is incorrect => increasing gravity
+        velocity.velocity.y -= 9.806 * 5.0 * time.delta_seconds();
+        // drag is proportional to velocity
+        velocity.velocity *= 0.99;
     }
 }
